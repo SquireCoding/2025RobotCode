@@ -67,7 +67,7 @@ public class SDrivetrain {
         motorBackLeftTurn.set(d);
     }
     public double getAbsFrontLeftRotation() {
-        double val = sensorFrontLeftDrive.getAbsolutePosition().getValue().in(Degree)+180;
+        double val = sensorFrontLeftDrive.getAbsolutePosition(true).getValue().in(Degree)+180;
         while (val>360) val-=360;
         while (val<0) val+=360;
         return (val);
@@ -79,7 +79,7 @@ public class SDrivetrain {
         return (val);
     }
     public double getAbsBackLeftRotation() {
-        double val = sensorBackLeftDrive.getAbsolutePosition().getValue().in(Degree)+180;
+        double val = sensorBackLeftDrive.getAbsolutePosition(true).getValue().in(Degree)+180;
         while (val>360) val-=360;
         while (val<0) val+=360;
         return (val);
@@ -91,7 +91,7 @@ public class SDrivetrain {
         return (val);
     }
     public double getAbsFrontRightRotation() {
-        double val = sensorFrontRightDrive.getAbsolutePosition().getValue().in(Degree)+180;
+        double val = sensorFrontRightDrive.getAbsolutePosition(true).getValue().in(Degree)+180;
         while (val>360) val-=360;
         while (val<0) val+=360;
         return (val);
@@ -103,7 +103,7 @@ public class SDrivetrain {
         return (val);
     }
     public double getAbsBackRightRotation() {
-        double val = sensorBackRightDrive.getAbsolutePosition().getValue().in(Degree)+180;
+        double val = sensorBackRightDrive.getAbsolutePosition(true).getValue().in(Degree)+180;
         while (val>360) val-=360;
         while (val<0) val+=360;
         return (val);

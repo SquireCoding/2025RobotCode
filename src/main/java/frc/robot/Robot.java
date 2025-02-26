@@ -161,7 +161,6 @@ public class Robot extends TimedRobot {
       }
     }
     if (motor==M.BACKRIGHT||motor==M.BACK||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTFRONTRIGHT) {
-      System.out.println("Turning back right to: "+desired);
       if (!isWithin(SDrivetrain.backRightLastDesired,desired,3)){
         SDrivetrain.backRightInc=SDrivetrain.startingInc;
         SDrivetrain.backRightLastDesired=desired;
