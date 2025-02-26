@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
     
       if (controllerOne.getBButton()) {//dev mode to get some diagnostic information
         System.out.println("\n\nRotational Speed: "+sigma.getYawSpeed()+"\nWanted Rotation: "+ SDrivetrain.fullRotation+"\nActual Rotation: "+sigma.getRotation());
-        System.out.println("Front right diff: "+(sigma.getAbsFrontRightRotation()-sigma.getFrontRightRotation()));
+        System.out.println("Front right diff: "+(sigma.getAbsFrontRightRotation()+","+sigma.getFrontRightRotation()));
         System.out.println("Front left: "+(sigma.getAbsFrontLeftRotation()-sigma.getFrontLeftRotation()));
         System.out.println("Back left: "+(sigma.getAbsBackLeftRotation()-sigma.getBackLeftRotation()));
         System.out.println("Back right: "+(sigma.getAbsBackRightRotation()-sigma.getBackRightRotation()));
