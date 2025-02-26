@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
           SDrivetrain.frontLeftInc= -SDrivetrain.frontLeftInc;
         }
         sigma.motorFrontLeftTurn.set(SDrivetrain.frontLeftInc);
-      }//still
+      }//still trying
     }
     if (motor==M.BACKRIGHT||motor==M.BACK||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTFRONTRIGHT) {
       if (!isWithin(SDrivetrain.backRightLastDesired,desired,3)){
