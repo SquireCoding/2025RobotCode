@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
   static double lastDesired = -1;//holds what the last desired rotation of the motors was
   static boolean rotating = false; //controls whether the robot's kept rotational value should be changed or nah
   
-  
+  //still trying
   
   public void testPeriodic() {
     
