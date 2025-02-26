@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
         System.out.println("Back left: "+(sigma.getAbsBackLeftRotation()-sigma.getBackLeftRotation()));
         System.out.println("Back right: "+(sigma.getAbsBackRightRotation()-sigma.getBackRightRotation()));
       }
-      //still trying
+      //still trying to
       if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
         double thresh = 10;//the threshhold for how close to the desired rotations the wheels have to be at to rotate
         if (!controllerOne.getRightBumperButton()&&isWithin(sigma.getFrontRightRotation(),315.0,thresh)&&isWithin(sigma.getBackLeftRotation(),135.0,thresh)&&isWithin(sigma.getBackRightRotation(),225.0,thresh)&&isWithin(sigma.getFrontLeftRotation(),45.0,thresh)) {
