@@ -96,10 +96,11 @@ public class Robot extends TimedRobot {
           System.out.println("POV: "+controllerOne.getPOV());
           featherRotation(desired, M.ALL);//otherwise, turn em all
         }
+        
         multSpeed=10-(int)(controllerOne.getRightTriggerAxis()*10);//figure out how fast to go based on how much the zr button is held
         if (controllerOne.getRightBumperButton()) {//if you hold r it will not drive, just turn
           sigma.driveAmount(0);
-        } else sigma.driveAmount(-speed/multSpeed); //now it will drive the amount you gave it
+        } else sigma.driveAmount(-speed/(multSpeed+10*controllerOne.getLeftTriggerAxis())); //now it will drive the amount you gave it
     } else {
       if (rotating||Math.abs(sigma.getYawSpeed())>1) {//if the robot is probably rotating on purpose, we want to hold its rotational value.
         SDrivetrain.fullRotation=sigma.getRotation();
@@ -116,6 +117,9 @@ public class Robot extends TimedRobot {
    * @param motor the M enum that tells which motor to turn; @see M.java
    */
   public void featherRotation(double desired, M motor) {
+    if (controllerOne.getLeftBumperButton()) {
+      return;
+    }
     if (motor==M.FRONTRIGHT||motor==M.FRONT||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTBACKRIGHT) {
       if (!isWithin(SDrivetrain.frontRightLastDesired,desired,3)){
         SDrivetrain.frontRightInc=SDrivetrain.startingInc;
