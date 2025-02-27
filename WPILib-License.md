@@ -1,3 +1,5 @@
+WPILib License:
+
 Copyright (c) 2009-2024 FIRST and other WPILib contributors
 All rights reserved.
 
@@ -22,3 +24,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+LHS License:
+
+Ownership of this code is fully reserved to the current 7064 (Voltron) Robotics team. Reusing this code for your own robot is permitted, provided you provide credit to team 7064. Please do not use this code and/or parts of this code without crediting team 7064.
