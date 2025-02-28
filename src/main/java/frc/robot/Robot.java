@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
           System.out.println("Desired: "+desired);
         }
 
-        if (!isWithin(SDrivetrain.fullRotation,sigma.getRotation(),2)&&controllerOne.getLeftBumperButton()) {//if we're outside of the rotation, update the rotation by turning the back right wheel proportionally
+        if (!isWithin(SDrivetrain.fullRotation,sigma.getRotation(),2)&&controllerOne.getLeftBumperButton()&&false) {//if we're outside of the rotation, update the rotation by turning the back right wheel proportionally
           if (sigma.getRotation()>SDrivetrain.fullRotation) {
             featherRotation(desired+Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
             featherRotation(desired, M.NOTBACKRIGHT);
