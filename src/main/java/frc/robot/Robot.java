@@ -19,9 +19,9 @@ public class Robot extends TimedRobot {
    */
   private final SDrivetrain sigma = new SDrivetrain();//
   static double desiredRotation = -1; //the desired rotation is held as a field because otherwise we would lose the reference object
-  static int multSpeed =10;//the speed 
+  static int multSpeed = 10;//the speed 
   static double lastDesired = -1;//holds what the last desired rotation of the motors was
-  static boolean rotating = false; //controls whether the robot's kept rotational value should be changed or nah
+  static boolean rotating = false; //controls whether the robots kept rotational value should be changed or nah
   
   //still trying why!!!!!!!!!!!
   
@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
       if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
         double thresh = 10;//the threshhold for how close to the desired rotations the wheels have to be at to rotate
         if (!controllerOne.getRightBumperButton()&&isWithin(sigma.getFrontRightRotation(),315.0,thresh)&&isWithin(sigma.getBackLeftRotation(),135.0,thresh)&&isWithin(sigma.getBackRightRotation(),225.0,thresh)&&isWithin(sigma.getFrontLeftRotation(),45.0,thresh)) {
-          double roter = 6-(4*controllerOne.getRightTriggerAxis());//press zr to make it go faster, and zl to make it go slower
+          double roter = 6-(4*controllerOne.getRightTriggerAxis());//press zr trigger to make it go faster, and zl trigger to make it go slower
           sigma.driveAmount(-controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
           featherRotation(315, M.FRONTRIGHT);
           featherRotation(135, M.BACKLEFT);
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         double y = controllerOne.getLeftY();
         double x = controllerOne.getLeftX();//get postion of the left joystick on the controller
         desiredRotation=Math.toDegrees(Math.atan2(y,x));//after finding the left and right values of the joystick, get the rotation in degrees by tan^-1(y/x)
-        double speed=Math.sqrt(Math.pow(y,2)+Math.pow(x,2));//find the speed, by pythagorzing the x and y vaues aka john
+        double speed=Math.sqrt(Math.pow(y,2)+Math.pow(x,2));//find the speed, by pythagorzing the x and y values aka john
         double desired=desiredRotation;//put the desired rotation somewhere else for some reason
         desired=desired<0?desired+360:desired; //if the desired value is less than 360, bump it up until it is
         desired=Math.abs(360-desired);//reverse the rotation so that it lines up with a unit circle
