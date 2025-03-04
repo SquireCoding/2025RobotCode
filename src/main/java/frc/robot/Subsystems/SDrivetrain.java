@@ -138,4 +138,21 @@ public class SDrivetrain {
     public void stopDrive() {
         driveAmount(0);
     }
+    public void driveCertain(M motor, double d) {
+        if (motor==M.FRONTRIGHT||motor==M.FRONT||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTBACKRIGHT) {
+            motorFrontRightDrive.set(d);
+        }
+        if (motor==M.FRONTLEFT||motor==M.FRONT||motor==M.LEFT||motor==M.ALL||motor==M.NOTFRONTRIGHT||motor==M.NOTBACKLEFT||motor==M.NOTBACKRIGHT) {
+            motorFrontLeftDrive.set(d);
+        }
+        if (motor==M.BACKRIGHT||motor==M.BACK||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTFRONTRIGHT) {
+            motorBackRightDrive.set(d);
+        }
+        if (motor==M.BACKLEFT||motor==M.BACK||motor==M.LEFT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTFRONTRIGHT||motor==M.NOTBACKRIGHT) {
+            motorBackLeftDrive.set(d);
+        }
+        
+        
+        
+    }
 }
