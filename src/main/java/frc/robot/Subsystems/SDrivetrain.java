@@ -29,8 +29,6 @@ public class SDrivetrain {
     public final static double startingInc = 0.13;
     public static double fullRotation = -1;
     public static boolean backupRotation = false;
-
-
     public static double backLeftInc = startingInc;
     public static double backRightInc=startingInc;
     public static double frontRightInc=startingInc;
