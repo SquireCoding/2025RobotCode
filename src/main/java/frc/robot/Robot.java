@@ -14,6 +14,7 @@ public class Robot extends TimedRobot {
    * the primary driver controller
    */
   private final XboxController controllerOne = new XboxController(RobotMap.DRIVER_CONTROLLER1);
+  private final XboxController controllerTwo = new XboxController(RobotMap.DRIVER_CONTROLLER2);
   // private final Controllers controllerTwo = new Controllers(RobotMap.DRIVER_CONTROLLER2);
   /**
    * the drivetrain for the robot.
@@ -33,7 +34,21 @@ public class Robot extends TimedRobot {
     if (controllerOne.getStartButton()&&controllerOne.getBackButton()) {//if you hold the back and start at the same time, you calibrate the wheels to 180 degrees
       sigma.zeroSensors();
     }
-
+      /*if (controllerTwo.getYButton())
+       System.out.println("Trying: ");
+        SElevator.liftElevator();
+      } else if (controllerTwo.getXButton()) {
+        SElevator.lowerElevator();
+      } else SElevator.stopElevator();
+         if (controllerTwo.getAButton()) {
+        SCoral.lowerElevator();
+      } else SCoral.stopElevator();
+      if (controllerTwo.getPOV()==180) {
+        balls.moveDownward();
+      } else if (controllerTwo.getPOV()==0) {
+        balls.moveBackDownward();
+      } else balls.stopDownward();
+        */
       if (controllerOne.getYButton()) {
         System.out.println("Trying: ");
         SElevator.liftElevator();
