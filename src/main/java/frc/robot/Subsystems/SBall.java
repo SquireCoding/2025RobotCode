@@ -14,19 +14,19 @@ public class SBall {
         
     }
     public static void moveDownward() {
-        grab();
+        smallGrab();
         downward.set(-0.2);
     }
     public static void moveBackDownward() {
         downward.set(0.2);
-        release();
+        //release();
     }
     public static void stopDownward() {
         downward.set(0.0);
         stopGrab();
     }
     public static void grab() {
-        grabber.set(0.2);
+        grabber.set(0.5);
 
     }
     public static void release() {
@@ -36,6 +36,9 @@ public class SBall {
     public static void stopGrab() {
         grabber.set(0);
         
+    }
+    public static void smallGrab() {
+        grabber.set(0.2);
     }
     /*
     public static void stopElevator() {
