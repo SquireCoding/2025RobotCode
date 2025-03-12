@@ -59,11 +59,21 @@ public class Robot extends TimedRobot {
       if (controllerOne.getAButton()) {
         SCoral.lowerElevator();
       } else SCoral.stopElevator();
+
+
+
       if (controllerOne.getPOV()==180) {
         balls.moveDownward();
       } else if (controllerOne.getPOV()==0) {
         balls.moveBackDownward();
       } else balls.stopDownward();
+      if (controllerOne.getPOV()==90) {
+          SBall.grab();
+      } else if (controllerOne.getPOV()==270) {
+            SBall.release();
+          }
+      
+ 
       /*
        * if (controllerOne.getPOV()==270) {
         balls.grab();
