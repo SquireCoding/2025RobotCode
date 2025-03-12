@@ -11,7 +11,8 @@ public class SElevator {
     public static final SparkMax leftMotor = new SparkMax(31, MotorType.kBrushless);
     public static final SparkMax rightMotor = new SparkMax(32, MotorType.kBrushless);
     public SElevator() {
-        
+        leftMotor.getEncoder().setPosition(0);
+        rightMotor.getEncoder().setPosition(0);
     }
     public static void liftElevator() {
         leftMotor.set(0.2);

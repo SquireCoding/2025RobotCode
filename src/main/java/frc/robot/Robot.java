@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Subsystems.*;
 
 public class Robot extends TimedRobot {
-  RS rotateStyle= RS.TANK;
+  RS rotateStyle= RS.SMASH;
   /**
    * the primary driver controller
    */
@@ -68,10 +68,7 @@ public class Robot extends TimedRobot {
        */
       if (controllerOne.getBButton()) {//dev mode to get some diagnostic information
         System.out.println("\n\nRotational Speed: "+sigma.getYawSpeed()+"\nWanted Rotation: "+ SDrivetrain.fullRotation+"\nActual Rotation: "+sigma.getRotation());
-        System.out.println("Front right diff: "+(sigma.getAbsFrontRightRotation()+","+sigma.getFrontRightRotation()));
-        System.out.println("Front left: "+(sigma.getAbsFrontLeftRotation()+","+sigma.getFrontLeftRotation()));
-        System.out.println("Back left: "+(sigma.getAbsBackLeftRotation()+","+sigma.getBackLeftRotation()));
-        System.out.println("Back right: "+(sigma.getAbsBackRightRotation()+","+sigma.getBackRightRotation()));
+        System.out.println("Elevator Rotation:"+(tspmo.leftMotor.getEncoder().getPosition()));
       }
       //still trying to
       if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
