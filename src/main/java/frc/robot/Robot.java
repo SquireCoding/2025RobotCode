@@ -49,23 +49,30 @@ public class Robot extends TimedRobot {
         balls.moveBackDownward();
       } else balls.stopDownward();
         */
-        if (controllerOne.getLeftBumperButton()) {
-          SElevator.featherHeight(50.0);
-        }
-      if (controllerOne.getYButton()) {
+        
+      if (false&&controllerOne.getYButton()) {
         System.out.println("Trying: ");
         SElevator.liftElevator();
-      } else if (controllerOne.getXButton()) {
+      } else if (false&&controllerOne.getXButton()) {
         SElevator.lowerElevator();
+      }else  if (controllerOne.getLeftBumperButton()) {
+        if (controllerOne.getYButton()) SElevator.featherHeight(55.048057); else
+        if (controllerOne.getXButton()) SElevator.featherHeight(29.166439); else
+        if (controllerOne.getBButton()) SElevator.featherHeight(12.261952); else
+        if (controllerOne.getAButton()) SElevator.featherHeight(10.69053);
+      } else  if (controllerOne.getRightStickButton()) {
+        System.out.println("Trying to feather:");
+        SElevator.featherHeight(29.16649);
       } else SElevator.stopElevator();
 
-      if (controllerOne.getAButton()) {
+      if (!controllerOne.getLeftBumperButton()&&controllerOne.getAButton()) {
         SCoral.lowerElevator();
       } else SCoral.stopElevator();
 
 
+      if (controllerOne.getLeftBumperButton()) {
 
-      if (controllerOne.getPOV()==180) {
+      } else if (controllerOne.getPOV()==180) {
         balls.moveDownward();
       } else if (controllerOne.getPOV()==0) {
         balls.moveBackDownward();
@@ -75,6 +82,7 @@ public class Robot extends TimedRobot {
       } else if (controllerOne.getPOV()==270) {
             SBall.release();
           }
+      
       
  
       /*
