@@ -6,9 +6,25 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Subsystems.*;
 
+
+import javax.sound.sampled.SourceDataLine;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+
 public class Robot extends TimedRobot {
+  
+  
+   
+ 
+  
   RS rotateStyle= RS.SMASH;
   /**
    * the primary driver controller
@@ -336,6 +352,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     // driveWithJoystick(false);
+    CameraServer.startAutomaticCapture("camera", 0); // id is what you set the camera to, apparently.
   }
 
   @Override
