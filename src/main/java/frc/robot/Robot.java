@@ -65,6 +65,9 @@ public class Robot extends TimedRobot {
         balls.moveBackDownward();
       } else balls.stopDownward();
         */
+        if (controllerOne.getLeftBumperButton()) {
+          SElevator.featherHeight(50.0);
+        }
       if (controllerOne.getYButton()) {
         System.out.println("Trying: ");
         SElevator.liftElevator();

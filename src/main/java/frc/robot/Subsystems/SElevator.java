@@ -32,11 +32,26 @@ public class SElevator {
         leftMotor.set(-0.1);
         rightMotor.set(0.1);
     }
+    public static double getPos() {
+        return leftMotor.getEncoder().getPosition();
+    }
     public static void featherHeight(double de) {
+        des=de;
+        if (de!=lastDes) {
+            inc=0.8;
+            if (getPos()<de) inc=-0.8;
+            lastDes=de;
+        }
         if (!Robot.isWithin(leftMotor.getEncoder().getPosition(), des, 2.0)) {
             leftMotor.set(inc);
             rightMotor.set(-inc);
-            // if ()
+            if (getPos()>des&&inc>0) {
+                inc/=5.0;
+                inc=-inc;
+            } else if (getPos()<des&&inc<0) {
+                inc/=5.0;
+                inc=-inc;
+            }
         }
     }
     
