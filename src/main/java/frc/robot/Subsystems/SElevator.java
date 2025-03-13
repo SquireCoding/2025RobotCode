@@ -17,7 +17,8 @@ public class SElevator {
     public static double des = 0.0;
     public static double lastDes =0.0;
     public SElevator() {
-        
+        leftMotor.getEncoder().setPosition(0);
+        rightMotor.getEncoder().setPosition(0);
     }
     public static void liftElevator() {
         leftMotor.set(0.2);
