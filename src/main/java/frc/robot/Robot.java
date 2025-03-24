@@ -21,7 +21,7 @@ import edu.wpi.first.cscore.UsbCamera;
 
 public class Robot extends TimedRobot {
   
-  
+CameraServer.startAutomaticCapture();
    
  
   
