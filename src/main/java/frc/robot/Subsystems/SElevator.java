@@ -13,12 +13,13 @@ import static edu.wpi.first.units.Units.Degree;
 public class SElevator {
     public static final SparkMax leftMotor = new SparkMax(31, MotorType.kBrushless);
     public static final SparkMax rightMotor = new SparkMax(32, MotorType.kBrushless);
-    public static double inc = 0.8;
+    public static double inc = 0.4;
     public static double des = 0.0;
     public static double lastDes =0.0;
     public SElevator() {
         leftMotor.getEncoder().setPosition(0);
         rightMotor.getEncoder().setPosition(0);
+        lastDes=-1;
     }
     public static void liftElevator() {
         leftMotor.set(0.2);
@@ -38,19 +39,23 @@ public class SElevator {
     public static void featherHeight(double de) {
         des=de;
         if (de!=lastDes) {
-            inc=0.8;
-            if (getPos()<de) inc=-0.8;
+            inc=0.4;
+            if (getPos()>de) inc=-0.4;
             lastDes=de;
         }
+        System.out.println("Desired: "+des+"\nAct: "+getPos());
         if (!Robot.isWithin(leftMotor.getEncoder().getPosition(), des, 2.0)) {
             leftMotor.set(inc);
             rightMotor.set(-inc);
+            inc=(Math.abs(des-getPos())*(0.5/15.0));
+            System.out.println("Dif f(x): "+(Math.abs(des-getPos())*(0.6/15.0)));
             if (getPos()>des&&inc>0) {
-                inc/=5.0;
                 inc=-inc;
             } else if (getPos()<des&&inc<0) {
-                inc/=5.0;
+                System.out.println("Before: "+inc);
+                
                 inc=-inc;
+                System.out.println("After: "+inc);
             }
         }
     }
