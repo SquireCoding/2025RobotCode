@@ -21,17 +21,17 @@ public class SElevator {
         rightMotor.getEncoder().setPosition(0);
         lastDes=-1;
     }
-    public static void liftElevator() {
-        leftMotor.set(0.2);
-        rightMotor.set(-0.2);
+    public static void liftElevator(double amount) {
+        leftMotor.set(0.3+0.5*amount);
+        rightMotor.set(-0.3-0.5*amount);
     }
     public static void stopElevator() {
         leftMotor.set(0.05);
         rightMotor.set(-0.05);
     }
-    public static void lowerElevator() {
-        leftMotor.set(-0.1);
-        rightMotor.set(0.1);
+    public static void lowerElevator(double amount) {
+        leftMotor.set(-0.1-0.5*amount);
+        rightMotor.set(0.1+0.5*amount);
     }
     public static double getPos() {
         return leftMotor.getEncoder().getPosition();

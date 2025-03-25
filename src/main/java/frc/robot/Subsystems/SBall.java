@@ -21,9 +21,25 @@ public class SBall {
         downward.set(0.2);
         //release();
     }
+    public static void modDownward(double amt) {
+        smallGrab();
+        downward.set(-0.2-0.2*amt);
+    }
+    public static void modBackDownward(double amt) {
+        downward.set(0.2+0.2*amt);
+        //release();
+    }
     public static void stopDownward() {
         downward.set(0.0);
         tinyGrab();
+    }
+    public static void modGrab(double amt) {
+        grabber.set(0.5+0.4*amt);
+   
+    }
+    public static void modRelease(double amt) {
+        grabber.set(-0.2-0.2*amt);
+        
     }
     public static void grab() {
         grabber.set(0.5);
