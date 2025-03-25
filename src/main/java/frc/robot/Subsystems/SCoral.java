@@ -16,8 +16,12 @@ public class SCoral {
         leftMotor.set(0);
         rightMotor.set(0);
     }
-    public static void lowerElevator() {
+    public static void hawk() {
         leftMotor.set(-0.1);
         rightMotor.set(0.1);
+    }
+    public static void tuah() {
+        leftMotor.set(0.1);
+        rightMotor.set(-0.1);
     }
 }

@@ -117,6 +117,7 @@ public class SDrivetrain {
         sensorBackRightDrive.setPosition(0);
         sensorFrontRightDrive.setPosition(0);
         sensorFrontLeftDrive.setPosition(0);
+        System.out.println("Wheels calibrated");
     }
     public double getYaw() {
         return gyro.getYaw().getValueAsDouble();
@@ -137,6 +138,7 @@ public class SDrivetrain {
         driveAmount(0);
     }
     public void driveCertain(M motor, double d) {
+        
         if (motor==M.FRONTRIGHT||motor==M.FRONT||motor==M.RIGHT||motor==M.ALL||motor==M.NOTFRONTLEFT||motor==M.NOTBACKLEFT||motor==M.NOTBACKRIGHT) {
             motorFrontRightDrive.set(d);
         }
