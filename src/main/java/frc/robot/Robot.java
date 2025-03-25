@@ -20,10 +20,9 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 
 public class Robot extends TimedRobot {
-  
-CameraServer.startAutomaticCapture();
-   
- 
+  public Robot() {
+    CameraServer.startAutomaticCapture();
+  }
   
   RS rotateStyle= RS.SMASH;
   /**
