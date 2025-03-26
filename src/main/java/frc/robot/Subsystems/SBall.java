@@ -15,18 +15,18 @@ public class SBall {
     }
     public static void moveDownward() {
         smallGrab();
-        downward.set(-0.2);
+        downward.set(-0.1);
     }
     public static void moveBackDownward() {
-        downward.set(0.2);
+        downward.set(0.15);
         //release();
     }
     public static void modDownward(double amt) {
         smallGrab();
-        downward.set(-0.2-0.2*amt);
+        downward.set(-0.1-0.2*amt);
     }
     public static void modBackDownward(double amt) {
-        downward.set(0.2+0.2*amt);
+        downward.set(0.1+0.2*amt);
         //release();
     }
     public static void stopDownward() {

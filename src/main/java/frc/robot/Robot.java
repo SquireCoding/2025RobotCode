@@ -61,6 +61,8 @@ public class Robot extends TimedRobot {
       numHold=false;
     }
     if (numPlayers==2) {
+      double desired=0;
+      double speed=0;
         /*if (controllerTwo.getYButton())
          System.out.println("Trying: ");
           SElevator.liftElevator();
@@ -99,10 +101,8 @@ public class Robot extends TimedRobot {
           if (controllerTwo.getStartButtonReleased()) {
             diff++;
           }
+          SBall.stopDownward();
             if (controllerTwo.getPOV()==0) {
-              System.out.println("Trying: ");
-              double mod = 1;
-  
               SElevator.liftElevator(controllerTwo.getRightTriggerAxis());
             } else if (controllerTwo.getPOV()==180) {
               SElevator.lowerElevator(controllerTwo.getRightTriggerAxis());
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
               balls.modDownward(controllerTwo.getRightTriggerAxis());
             } else if (controllerTwo.getLeftY()<=-0.3) {
               balls.modBackDownward(Math.abs(controllerTwo.getRightTriggerAxis()));
-            } else balls.stopDownward();
+            }
 
 
             if (controllerTwo.getRightX()>=0.3) {
@@ -138,7 +138,86 @@ public class Robot extends TimedRobot {
               System.out.println("Elevator Rotation:"+(tspmo.leftMotor.getEncoder().getPosition()));
             }
             //still trying to
-            if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
+            if (controllerOne.getLeftX()>0.2||controllerOne.getLeftX()<-0.2||controllerOne.getLeftY()>0.2||controllerOne.getLeftY()<-0.2) {
+              
+              if (rotating) {//if we are rotating, update the held rotational value
+                SDrivetrain.fullRotation=sigma.getRotation();
+                rotating=false;
+              }
+              double y = controllerOne.getLeftY();
+              double x = controllerOne.getLeftX();//get postion of the left joystick on the controller
+              desiredRotation=Math.toDegrees(Math.atan2(y,x));//after finding the left and right values of the joystick, get the rotation in degrees by tan^-1(y/x)
+              speed=Math.sqrt(Math.pow(y,2)+Math.pow(x,2));//find the speed, by pythagorzing the x and y values aka john
+              desired=desiredRotation;//put the desired rotation somewhere else for some reason
+              desired=desired<0?desired+360:desired; //if the desired value is less than 360, bump it up until it is
+              desired=Math.abs(360-desired);//reverse the rotation so that it lines up with a unit circle
+              if (Math.abs(Math.abs(SDrivetrain.lastDesired)-Math.abs((int)desired))>5) { //if the feathering rotation is more than the previous one, reset the increments of change of the rotation of the wheels 
+                sigma.resetIncs();
+              }
+              if (controllerOne.getBackButton()) {//if you hold the back button, the wheels go to 180
+                desired=180;
+              }
+      
+              sigma.lastDesired=(int)desired;//update the last desired as a int to find the threshold of change
+              if (controllerOne.getXButton()) {
+                System.out.println("Desired: "+desired);
+              }
+      
+              if (!isWithin(SDrivetrain.fullRotation,sigma.getRotation(),2)&&controllerOne.getLeftBumperButton()&&false) {//if we're outside of the rotation, update the rotation by turning the back right wheel proportionally
+                if (sigma.getRotation()>SDrivetrain.fullRotation) {
+                  featherRotation(desired+Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
+                  featherRotation(desired, M.NOTBACKRIGHT);
+                }
+                if (sigma.getRotation()<SDrivetrain.fullRotation) {
+                  featherRotation(desired-Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
+                  featherRotation(desired, M.NOTBACKRIGHT);
+                }
+              }if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
+              
+                if (rotateStyle==RS.SMASH) {
+                  featherRotation(desired, M.FRONTRIGHT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKLEFT);
+                    featherRotation(desired, M.FRONTLEFT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKRIGHT);
+                }
+                if (rotateStyle==RS.TANK) {
+                  int amountToMove = 10;
+                  if (turnDesired==-1) {
+                    turnDesired=SDrivetrain.lastDesired;
+                  }
+                  double thresh = 20;//the threshhold for how close to the desired rotations the wheels have to be at to rotate
+                  double roter = 6-(4*controllerOne.getRightTriggerAxis());//press zr to make it go faster, and zl to make it go slower
+                    // sigma.driveAmount(-controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
+                    System.out.println("Driving: "+roter);
+                    sigma.driveCertain(M.RIGHT, -controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
+                    sigma.driveCertain(M.LEFT, controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
+                  /*
+                  * if (!controllerOne.getRightBumperButton()&&isWithin(sigma.getFrontRightRotation(),turnDesired+amountToMove,thresh)&&isWithin(sigma.getBackLeftRotation(),turnDesired+amountToMove,thresh)&&isWithin(sigma.getBackRightRotation(),turnDesired-amountToMove,thresh)&&isWithin(sigma.getFrontLeftRotation(),turnDesired-amountToMove,thresh)) {
+                    
+                    featherRotation(turnDesired+amountToMove, M.FRONTRIGHT);
+                    featherRotation(turnDesired+amountToMove, M.BACKLEFT);
+                    featherRotation(turnDesired-amountToMove, M.FRONTLEFT);
+                    featherRotation(turnDesired-amountToMove, M.BACKRIGHT);
+                  } else {
+                    System.out.println("Rotating");
+                    sigma.stopDrive();//if we are not yet at the desired rotations of the wheels, do not drive
+                    featherRotation(turnDesired+amountToMove, M.FRONTRIGHT);
+                    featherRotation(turnDesired+amountToMove, M.BACKLEFT);
+                    featherRotation(turnDesired-amountToMove, M.FRONTLEFT);
+                    featherRotation(turnDesired-amountToMove, M.BACKRIGHT);
+                  }
+                  */
+                  rotating=true;
+                } 
+              } else {
+                featherRotation(desired, M.ALL);
+              }
+              //otherwise, turn em all
+              multSpeed=10-(int)(controllerOne.getRightTriggerAxis()*10);//figure out how fast to go based on how much the zr button is held
+              if (controllerOne.getRightBumperButton()) {//if you hold r it will not drive, just turn
+                sigma.driveAmount(0);
+              } else sigma.driveAmount(-speed/(multSpeed+10*controllerOne.getLeftTriggerAxis()));
+            } else if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
               
               if (rotateStyle==RS.SMASH) {
                 double thresh = 10;//the threshhold for how close to the desired rotations the wheels have to be at to rotate
@@ -186,51 +265,10 @@ public class Robot extends TimedRobot {
                 }
                 */
                 rotating=true;
-              }
-            } else if (controllerOne.getLeftX()>0.2||controllerOne.getLeftX()<-0.2||controllerOne.getLeftY()>0.2||controllerOne.getLeftY()<-0.2) {
-              if (rotating) {//if we are rotating, update the held rotational value
-                SDrivetrain.fullRotation=sigma.getRotation();
-                rotating=false;
-              }
-              double y = controllerOne.getLeftY();
-              double x = controllerOne.getLeftX();//get postion of the left joystick on the controller
-              desiredRotation=Math.toDegrees(Math.atan2(y,x));//after finding the left and right values of the joystick, get the rotation in degrees by tan^-1(y/x)
-              double speed=Math.sqrt(Math.pow(y,2)+Math.pow(x,2));//find the speed, by pythagorzing the x and y values aka john
-              double desired=desiredRotation;//put the desired rotation somewhere else for some reason
-              desired=desired<0?desired+360:desired; //if the desired value is less than 360, bump it up until it is
-              desired=Math.abs(360-desired);//reverse the rotation so that it lines up with a unit circle
-              if (Math.abs(Math.abs(SDrivetrain.lastDesired)-Math.abs((int)desired))>5) { //if the feathering rotation is more than the previous one, reset the increments of change of the rotation of the wheels 
-                sigma.resetIncs();
-              }
-              if (controllerOne.getBackButton()) {//if you hold the back button, the wheels go to 180
-                desired=180;
-              }
-      
-              sigma.lastDesired=(int)desired;//update the last desired as a int to find the threshold of change
-              if (controllerOne.getXButton()) {
-                System.out.println("Desired: "+desired);
-              }
-      
-              if (!isWithin(SDrivetrain.fullRotation,sigma.getRotation(),2)&&controllerOne.getLeftBumperButton()&&false) {//if we're outside of the rotation, update the rotation by turning the back right wheel proportionally
-                if (sigma.getRotation()>SDrivetrain.fullRotation) {
-                  featherRotation(desired+Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
-                  featherRotation(desired, M.NOTBACKRIGHT);
-                }
-                if (sigma.getRotation()<SDrivetrain.fullRotation) {
-                  featherRotation(desired-Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
-                  featherRotation(desired, M.NOTBACKRIGHT);
-                }
-              } else if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2 ){
+              } 
                 
-              } else {
-                System.out.println("POV: "+controllerOne.getPOV());
-                featherRotation(desired, M.ALL);//otherwise, turn em all
-              }
               
-              multSpeed=10-(int)(controllerOne.getRightTriggerAxis()*10);//figure out how fast to go based on how much the zr button is held
-              if (controllerOne.getRightBumperButton()) {//if you hold r it will not drive, just turn
-                sigma.driveAmount(0);
-              } else sigma.driveAmount(-speed/(multSpeed+10*controllerOne.getLeftTriggerAxis())); //now it will drive the amount you gave it
+               //now it will drive the amount you gave it
           } else {
             if (rotating||Math.abs(sigma.getYawSpeed())>1) {//if the robot is probably rotating on purpose, we want to hold its rotational value.
               SDrivetrain.fullRotation=sigma.getRotation();
@@ -475,7 +513,6 @@ public class Robot extends TimedRobot {
               
                //now it will drive the amount you gave it
           } else {
-            System.out.println("Stopping");
             if (rotating||Math.abs(sigma.getYawSpeed())>1) {//if the robot is probably rotating on purpose, we want to hold its rotational value.
               SDrivetrain.fullRotation=sigma.getRotation();
               rotating=false;
