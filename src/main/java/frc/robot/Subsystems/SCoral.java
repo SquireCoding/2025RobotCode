@@ -24,4 +24,12 @@ public class SCoral {
         leftMotor.set(0.1);
         rightMotor.set(-0.1);
     }
+    public static void modhawk(double mod) {
+        leftMotor.set(-0.1-0.3*mod);
+        rightMotor.set(0.1+0.3*mod);
+    }
+    public static void modtuah(double mod) {
+        leftMotor.set(0.1+0.3*mod);
+        rightMotor.set(-0.1-0.3*mod);
+    }
 }

@@ -5,17 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystems.*;
 
 
 import javax.sound.sampled.SourceDataLine;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
 
 public class Robot extends TimedRobot {
 
@@ -41,11 +44,35 @@ public class Robot extends TimedRobot {
   static boolean holding = false;
   static boolean numHold = false;
   static int diff = 0;
-  static int numPlayers = 1;
+  static int numPlayers = 2;
   
   //still trying why!!!!!!!!!!!
-  
+@Override
+public void robotInit() {
+  sigma.zeroSensors();
+  UsbCamera cam = CameraServer.startAutomaticCapture();
+  cam.setResolution(640*2, 480*2);
+}
+@Override
+public void robotPeriodic() {
+  CommandScheduler.getInstance().run();
+}
+
+  @Override
+  public void autonomousInit() {
+    
+  }
+  @Override
+  public void autonomousPeriodic() {
+      sigma.driveAmount(-0.2);
+    
+      
+    
+    featherRotation(90, M.ALL);
+  }
+
   public void teleopPeriodic() {
+
     if (controllerOne.getStartButton()) {
       System.out.println("Controller One");
     }
@@ -80,20 +107,20 @@ public class Robot extends TimedRobot {
           */
         if (!calibration) {
           if (controllerTwo.getPOV()==90) {
-            SCoral.hawk();
+            SCoral.modhawk(controllerTwo.getRightTriggerAxis());
           } else if (controllerTwo.getPOV()==270) {
-            SCoral.tuah();
+            SCoral.modtuah(controllerTwo.getRightTriggerAxis());
           }else {
             SCoral.stopElevator();
           }
           if (controllerTwo.getYButton()) {
-            SElevator.featherHeight(55.048057+diff);
+            SElevator.featherHeight(2+diff);
           } else if (controllerTwo.getBButton()) {
-            SElevator.featherHeight(29.166439+diff);
+            SElevator.featherHeight(30.166439+diff);
           } else if (controllerTwo.getXButton()) {
-            SElevator.featherHeight(12.261952+diff);
+            SElevator.featherHeight(13.261952+diff);
           } else if (controllerTwo.getAButton()) {
-            SElevator.featherHeight(10.69053+diff);
+            SElevator.featherHeight(11.69053+diff);
           } else SElevator.stopElevator();
           if (controllerTwo.getBackButtonReleased()) {
             diff--;
@@ -175,10 +202,10 @@ public class Robot extends TimedRobot {
               }if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
               
                 if (rotateStyle==RS.SMASH) {
-                  featherRotation(desired, M.FRONTRIGHT);
-                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKLEFT);
-                    featherRotation(desired, M.FRONTLEFT);
-                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKRIGHT);
+                  featherRotation(desired, M.BACKRIGHT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.FRONTLEFT);
+                    featherRotation(desired, M.BACKLEFT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.FRONTRIGHT);
                 }
                 if (rotateStyle==RS.TANK) {
                   int amountToMove = 10;
@@ -281,6 +308,9 @@ public class Robot extends TimedRobot {
           double amount = 0.2*controllerOne.getLeftX();
           amount*=(1.0-controllerOne.getLeftTriggerAxis());
           amount=-amount;
+          if (Timer.getMatchTime()<2||controllerOne.getRightBumperButton()) {
+            featherRotation(180, M.ALL);
+          }
           if (controllerOne.getAButton()) {
             sigma.motorBackRightTurn.set(amount);
           } else sigma.motorBackRightTurn.set(0);
@@ -407,21 +437,14 @@ public class Robot extends TimedRobot {
               }
       
               if (!isWithin(SDrivetrain.fullRotation,sigma.getRotation(),2)&&controllerOne.getLeftBumperButton()&&false) {//if we're outside of the rotation, update the rotation by turning the back right wheel proportionally
-                if (sigma.getRotation()>SDrivetrain.fullRotation) {
-                  featherRotation(desired+Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
-                  featherRotation(desired, M.NOTBACKRIGHT);
-                }
-                if (sigma.getRotation()<SDrivetrain.fullRotation) {
-                  featherRotation(desired-Math.abs(calculateDistanceValue(sigma.getRotation(),SDrivetrain.fullRotation)), M.BACKRIGHT);
-                  featherRotation(desired, M.NOTBACKRIGHT);
-                }
+                
               }if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
               
                 if (rotateStyle==RS.SMASH) {
-                  featherRotation(desired, M.FRONTRIGHT);
-                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKLEFT);
-                    featherRotation(desired, M.FRONTLEFT);
-                    featherRotation(desired-(50*controllerOne.getRightX()), M.BACKRIGHT);
+                    featherRotation(desired, M.BACKRIGHT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.FRONTLEFT);
+                    featherRotation(desired, M.BACKLEFT);
+                    featherRotation(desired-(50*controllerOne.getRightX()), M.FRONTRIGHT);
                 }
                 if (rotateStyle==RS.TANK) {
                   int amountToMove = 10;
@@ -432,8 +455,8 @@ public class Robot extends TimedRobot {
                   double roter = 6-(4*controllerOne.getRightTriggerAxis());//press zr to make it go faster, and zl to make it go slower
                     // sigma.driveAmount(-controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
                     System.out.println("Driving: "+roter);
-                    sigma.driveCertain(M.RIGHT, -controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
-                    sigma.driveCertain(M.LEFT, controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
+                    // sigma.driveCertain(M.RIGHT, -controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
+                    // sigma.driveCertain(M.LEFT, controllerOne.getRightX()/(roter+20*controllerOne.getLeftTriggerAxis()));
                   /*
                   * if (!controllerOne.getRightBumperButton()&&isWithin(sigma.getFrontRightRotation(),turnDesired+amountToMove,thresh)&&isWithin(sigma.getBackLeftRotation(),turnDesired+amountToMove,thresh)&&isWithin(sigma.getBackRightRotation(),turnDesired-amountToMove,thresh)&&isWithin(sigma.getFrontLeftRotation(),turnDesired-amountToMove,thresh)) {
                     
@@ -456,10 +479,10 @@ public class Robot extends TimedRobot {
                 featherRotation(desired, M.ALL);
               }
               //otherwise, turn em all
-              multSpeed=10-(int)(controllerOne.getRightTriggerAxis()*10);//figure out how fast to go based on how much the zr button is held
+              multSpeed=5-(int)(controllerOne.getRightTriggerAxis()*10);//figure out how fast to go based on how much the zr button is held
               if (controllerOne.getRightBumperButton()) {//if you hold r it will not drive, just turn
                 sigma.driveAmount(0);
-              } else sigma.driveAmount(-speed/(multSpeed+10*controllerOne.getLeftTriggerAxis()));
+              } else sigma.driveAmount(Math.min(Math.abs(-speed/(multSpeed+10*controllerOne.getLeftTriggerAxis())),1));
             } else if (controllerOne.getRightX()>0.2||controllerOne.getRightX()<-0.2) {//if the right stick on the controller is being reasonaly held down, then we rotate
               
               if (rotateStyle==RS.SMASH) {
